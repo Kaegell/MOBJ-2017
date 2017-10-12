@@ -1,0 +1,22 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/users/enseig/mambu/MOBJ/TMEs/TME1/src/cBox.c
+malloc.h
+-
+stdio.h
+-
+string.h
+-
+cBox.h
+/users/enseig/mambu/MOBJ/TMEs/TME1/src/cBox.h
+
+/users/enseig/mambu/MOBJ/TMEs/TME1/src/cBox.h
+stdlib.h
+-
+
