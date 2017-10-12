@@ -12,9 +12,9 @@
 
     include_directories( ${TME3_SOURCE_DIR})
 
-                    set( includes     Timer.h )
-                    set( cpps         Main.cpp )
-         add_executable( tme3         ${cpps} )
+                    set( includes		Timer.h )
+                    set( cpps			Main.cpp)
+					add_executable		( tme3			${cpps} )
 
                 install( TARGETS tme3        DESTINATION bin )
                 install( FILES   ${includes} DESTINATION include )
