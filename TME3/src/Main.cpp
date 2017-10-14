@@ -81,12 +81,23 @@ namespace list_bench
 
 namespace map_bench
 {
-	void backInsert()
+	void insert()
 	{
-		map<int,string> GPL_2_map;
-		for(int i = 0;GPL_2_text[i] != NULL; i++)
+		string str;
+		map<string,int> GPL_2_map;
+		map<string,int>::iterator it;
+		for(int i = 0; GPL_2_text[i] != NULL; i++)
 		{
-			GPL_2_map[i] = GPL_2_text[i];
+			str = string(GPL_2_text[i]);
+			it = GPL_2_map.find(str);
+			if (it != GPL_2_map.end())
+			{
+				it->second++;
+			}
+			else
+			{
+				GPL_2_map.insert(pair<string,int>(str,1));
+			}
 		}
 	}
 }
@@ -126,16 +137,8 @@ int main ( int argc, char* argv[] )
 
 	cout << "Map Bench Test" << endl;
 	t = t.start();
-	map_bench::backInsert    ();
+	map_bench::insert    ();
 	t = t.stop();
-	cout << "backInsert exec. time : " << t << endl;
-	//t = t.start();
-	//map_bench::frontInsert   ();
-	//t = t.stop();
-	//cout << "frontInsert exec. time : " << t << endl;
-	//t = t.start();
-	//map_bench::sortEachInsert();
-	//t = t.stop();
-	//cout << "sortEachInsert exec. time : " << t << endl << endl;
+	cout << "insert exec. time : " << t << endl << endl;
 	return 0;
 }
