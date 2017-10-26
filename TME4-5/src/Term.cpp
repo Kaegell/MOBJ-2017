@@ -1,44 +1,45 @@
 #include <iostream>
 #include <vector>
 #include "Indentation.h"
+#include "Net.h"
+#include "Node.h"
 #include "Cell.h"
 #include "Term.h"
 #include "Point.h"
 
 using namespace Netlist;
 
-Term::Term (Cell* c, const std::string& name, Direction d) :
+Term::Term (Cell* c, const std::string& name, Term::Direction d) :
 	owner_(c), name_(name), direction_(d)
 {
 	type_ = Term::External;
 	net_ = NULL;
-	node_ = new Node (this, Node::noid);
+	node_ = Node (this);
 }
 
 Term::Term (Instance* i, const Term* modelTerm) :
 	owner_(i)
 {
 	type_ = Term::Internal;
-	name_ = modelTerm.getName();
+	name_ = modelTerm->getName();
 	net_ = NULL;
-	direction_ = modelTerm.getDirection();
-	node_ = new Node (this, Node::noid);
+	direction_ = modelTerm->getDirection();
+	node_ = Node (this);
 }
 
 Term::~Term ()
 {
-	~node();
+	delete node_;
 }
 
 void Term::setNet(Net* n)
 {
 	net_ = n;
-	n.add(node_);
+	n->add(node_);
 }
 
 void Term::setNet(const std::string& s)
 {
-	net_ = new Net(NULL,s,type_); 
 }
 
 void Term::setPosition (const Point& p)

@@ -53,7 +53,10 @@ size_t Net::getFreeNodeId () const
 }
 
 void add (Node* n)
-{}
+{
+	size_t id = getFreeNodeId();
+	nodes_.insert(nodes_.begin()+id, n);
+}
 
 bool remove (Node* n)
 {return true;}
