@@ -7,8 +7,18 @@
 
 using namespace Netlist;
 
-Instance (Cell* owner, Cell* model, const std::string& s);
-~Instance ();
+Instance::Instance (Cell* owner, Cell* model, const std::string& s) :
+	owner_(owner),
+	masterCell_(model),
+	name_(s),
+	terms_(),
+	position_()
+{
+}
+
+Instance::~Instance ()
+{
+}
 
 bool Instance::connect (const std::string& name, Net* n)
 {

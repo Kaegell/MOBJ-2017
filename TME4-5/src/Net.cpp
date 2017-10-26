@@ -8,21 +8,23 @@
 using namespace Netlist;
 
 Net::Net (Cell* c, const std::string& s, Term::Type t) :
-	owner_(c), name_(s), type_(t)
+	owner_(c),
+	name_(s),
+	id_(owner_->newNetId()),
+	type_(t),
+	nodes_()
 {
-	nodes_ = new vector;
-	id_ = owner.newNetId();
-	owner.add(this);
+	owner_->add(this);
 }
 
 Net::~Net ()
 {
-	owner.remove(this);
+	owner_->remove(this);
 }
 
 Cell* Net::getCell () const
 {
-	return (type_ == Term::External) ? owner :
+	return (type_ == Term::External) ? owner_ :
 		NULL;
 }
 
@@ -52,11 +54,11 @@ size_t Net::getFreeNodeId () const
 	return id;
 }
 
-void add (Node* n)
+void Net::add (Node* n)
 {
-	size_t id = getFreeNodeId();
+	size_t id = Net::getFreeNodeId();
 	nodes_.insert(nodes_.begin()+id, n);
 }
 
-bool remove (Node* n)
+bool Net::remove (Node* n)
 {return true;}
