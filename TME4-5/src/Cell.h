@@ -1,5 +1,3 @@
-// -*- explicit-buffer-name: "Cell.h<M1-MOBJ/4-5>" -*-
-
 #ifndef NETLIST_CELL_H
 #define NETLIST_CELL_H
 
@@ -37,6 +35,7 @@ namespace Netlist {
                    void                    remove            ( Net* );
                    bool                    connect           ( const std::string& name, Net* net );
                    unsigned int            newNetId          ();
+				   void					   toXml			 (std::ostream& o);
     private:
       static  std::vector<Cell*>      cells_;
               std::string             name_;

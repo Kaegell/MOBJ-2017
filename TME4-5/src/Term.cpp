@@ -72,3 +72,31 @@ void Term::setPosition (int x, int y)
 {
 	node_.setPosition(x,y);
 }
+
+void Term::toXml(std::ostream& o)
+{
+	std::string dir;
+	switch(direction_)
+	{
+		case Term::In :
+			dir = "In";
+			break;
+		case Term::Out :
+			dir = "Out";
+			break;
+		case Term::Inout :
+			dir = "Inout";
+			break;
+		case Term::Tristate :
+			dir = "Tristate";
+			break;
+		case Term::Transcv :
+			dir = "Transcv";
+			break;
+		default :
+			dir = "Unknown";
+	}
+	o << indent << "<term name=\"" << name_ << "\"";
+	o << " direction=\"" << dir << "\"/>";
+	o << std::endl;
+}

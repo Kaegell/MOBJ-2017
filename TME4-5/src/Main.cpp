@@ -1,5 +1,3 @@
-// -*- explicit-buffer-name: "Main.cpp<M1-MOBJ/4-5>" -*-
-
 #include <string>
 #include <sstream>
 #include <iostream>
@@ -20,21 +18,21 @@ int main ( int argc, char* argv[] )
   new Term( and2, "i0", Term::In  );
   new Term( and2, "i1", Term::In  );
   new Term( and2,  "q", Term::Out );
-  //and2->toXml( cout );
+  and2->toXml( cout );
 
   cout << "\nConstruction du modele <or2>." << endl;
   Cell* or2 = new Cell ( "or2" );
   new Term( or2, "i0", Term::In  );
   new Term( or2, "i1", Term::In  );
   new Term( or2,  "q", Term::Out );
-  //or2->toXml( cout );
+  or2->toXml( cout );
 
   cout << "\nConstruction du modele <xor2>." << endl;
   Cell* xor2 = new Cell ( "xor2" );
   new Term( xor2, "i0", Term::In  );
   new Term( xor2, "i1", Term::In  );
   new Term( xor2,  "q", Term::Out );
-  //xor2->toXml( cout );
+  xor2->toXml( cout );
 
   cout << "\nConstruction du modele <halfadder>." << endl;
   Cell* halfadder = new Cell ( "halfadder" );
@@ -58,7 +56,7 @@ int main ( int argc, char* argv[] )
   ha_and2->connect( "i0", ha_a    );
   ha_and2->connect( "i1", ha_b    );
   ha_and2->connect(  "q", ha_cout );
-  //halfadder->toXml( cout );
+  halfadder->toXml( cout );
 
   return 0;
 }

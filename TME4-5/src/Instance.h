@@ -37,6 +37,8 @@ namespace Netlist
 			void remove (Term* t);
 			void setPosition (const Point& p);
 			void setPosition (int x, int y);
+			void toXml(std::ostream& o);
+			Term* getFromTerms ( const std::string& name ) const;
 		private:
 			Cell* owner_;
 			Cell* masterCell_;

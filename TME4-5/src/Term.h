@@ -16,6 +16,7 @@ namespace Netlist
 
 	class Term
 	{
+		friend class Instance;
 		public:
 			enum Type { Internal = 1, External = 2 };
 			enum Direction { In = 1, Out = 2, Inout = 3, Tristate = 4, Transcv = 5, Unknown = 6 };
@@ -69,6 +70,7 @@ namespace Netlist
 			{direction_ = d;}
 			void setPosition (const Point& p);
 			void setPosition (int x, int y);
+			void toXml(std::ostream& o);
 		private:
 			void*         owner_;
 			std::string   name_;

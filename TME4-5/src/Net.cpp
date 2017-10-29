@@ -1,11 +1,13 @@
 #include <iostream>
 #include <vector>
+#include "Indentation.h"
 #include "Cell.h"
 #include "Term.h"
 #include "Net.h"
 #include "Point.h"
 
 using namespace Netlist;
+using namespace std;
 
 Net::Net (Cell* c, const std::string& s, Term::Type t) :
 	owner_(c),
@@ -15,6 +17,7 @@ Net::Net (Cell* c, const std::string& s, Term::Type t) :
 	nodes_()
 {
 	owner_->add(this);
+	id_ = owner_->newNetId();
 }
 
 Net::~Net ()
@@ -65,6 +68,7 @@ void Net::add (Node* n)
 	{
 		nodes_.insert(nodes_.begin()+n->getId(), n);
 	}
+	n->setId(id);
 }
 
 bool Net::remove (Node* n)
@@ -80,4 +84,28 @@ bool Net::remove (Node* n)
 		}
 	}
 	return false;
+}
+
+void Net::toXml(std::ostream& o)
+{
+	std::string typ;
+	if(type_ == Term::Internal)
+	{
+		typ = "Internal";
+	}
+	else
+	{
+		typ = "External";
+	}
+	o << indent++ << "<net name=\"" << name_ << "\"";
+	o << " type=\"" << typ << "\"/>";
+	o << endl;
+	for(std::vector<Node*>::const_iterator it = nodes_.begin();
+			(it != nodes_.end());
+			it++)
+	{
+		(*it)->toXml(o);
+	}
+	o << --indent << "</net>";
+	o << endl;
 }

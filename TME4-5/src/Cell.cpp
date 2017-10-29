@@ -1,5 +1,3 @@
-// -*- explicit-buffer-name: "Cell.cpp<M1-MOBJ/4-5>" -*-
-
 #include  <cstdlib>
 #include  "Cell.h"
 #include  "Term.h"
@@ -160,8 +158,37 @@ namespace Netlist {
   unsigned int Cell::newNetId ()
   { return maxNetIds_++; }
 
+	void Cell::toXml (std::ostream& o)
+	{
+		o << "<?xml version=\"1.0\"?>" << std::endl;
+		o << indent++ << "<cell name=\"" << name_ << "\">" << std::endl;
 
-  // Cell::toXml() à écrire ici...
+		o << indent++ << "<terms>" << std::endl;
+		for(std::vector<Term*>::const_iterator it = terms_.begin();
+				it != terms_.end();
+				it++)
+		{
+			(*it)->toXml(o);
+		}
+		o << --indent << "</terms>" << std::endl;
 
-
+		o << indent++ << "<instances>" << std::endl;
+		for(std::vector<Instance*>::const_iterator it = instances_.begin();
+				it != instances_.end();
+				it++)
+		{
+			(*it)->toXml(o);
+		}
+		o << --indent << "</instances>" << std::endl;
+		
+		o << indent++ << "<nets>" << std::endl;
+		for(std::vector<Net*>::const_iterator it = nets_.begin();
+				it != nets_.end();
+				it++)
+		{
+			(*it)->toXml(o);
+		}
+		o << --indent << "</nets>" << std::endl;
+		o << --indent << "</cell>" << std::endl;
+	}
 }  // Netlist namespace.

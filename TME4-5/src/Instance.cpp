@@ -14,7 +14,12 @@ Instance::Instance (Cell* owner, Cell* model, const std::string& s) :
 	terms_(),
 	position_()
 {
-	terms_.insert(terms_.begin(), model->getTerms().begin(), model->getTerms().end());
+	for (std::vector<Term*>::const_iterator it = model->getTerms().begin();
+			it != model->getTerms().end();
+			it++)
+	{
+		new Term(this, *it);
+	}
 	owner_->add(this);
 }
 
@@ -29,19 +34,33 @@ Instance::~Instance ()
 	owner_->remove(this);
 }
 
+Term* Instance::getFromTerms ( const std::string& name ) const
+{
+	for ( std::vector<Term*>::const_iterator iterm=terms_.begin() ; iterm != terms_.end() ; ++iterm ) {
+	  if ((*iterm)->getName() == name)  return *iterm;
+	}
+	return NULL;
+}
+
 bool Instance::connect (const std::string& name, Net* n)
 {
-	return owner_->connect(name,n);
+    Term* term = getFromTerms(name);
+    if (term == NULL) return false;
+ 
+    term->setNet(n);
+    return true;
 }
 
 void Instance::add(Term* t)
 {
-	owner_->add(t);
+	terms_.push_back(t);
 }
 
 void Instance::remove (Term* t)
 {
-	owner_->remove(t);
+    for ( std::vector<Term*>::iterator iterm=terms_.begin() ; iterm != terms_.end() ; ++iterm ) {
+      if (*iterm == t) terms_.erase( iterm );
+	}
 }
 
 void Instance::setPosition (const Point& p)
@@ -52,4 +71,13 @@ void Instance::setPosition (const Point& p)
 void Instance::setPosition (int x, int y)
 {
 	position_ = Point (x, y);
+}
+
+void Instance::toXml(std::ostream& o)
+{
+	o << indent << "<instance name=\"" << name_ << "\"";
+	o << " mastercell=\"" << masterCell_->getName() << "\"";
+	o << " x=\"" << position_.getX();
+	o << " y=\"" << position_.getY();
+	o << "/>" << std::endl;
 }
