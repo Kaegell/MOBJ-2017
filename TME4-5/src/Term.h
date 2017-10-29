@@ -48,7 +48,7 @@ namespace Netlist
 
 			inline Cell* getOwnerCell()
 			{return (type_ == External) ? static_cast<Cell*>(owner_) :
-				static_cast<Instance*>(owner_)->getMasterCell();}
+				static_cast<Instance*>(owner_)->getCell();}
 
 			inline Instance* getInstance() const
 			{return (type_ == Internal) ? static_cast<Instance*>(owner_) :

@@ -28,25 +28,39 @@ Term::Term (Instance* i, const Term* modelTerm) :
 	net_(NULL),
 	node_(this)
 {
+	static_cast<Instance*>(owner_)->add(this);
 }
 
 Term::~Term ()
 {
 	delete &node_;
+	if(type_ == Term::External)
+	{
+		static_cast<Cell*>(owner_)->remove(this);
+	}
+	else
+	{
+		static_cast<Instance*>(owner_)->remove(this);
+	}
 }
 
 void Term::setNet(Net* n)
 {
-	net_ = n;
-	n->add(&node_);
-	if(type_ == Term::External)
+	if(n)
 	{
-	static_cast<Cell*>(owner_)->remove(this);
+		net_ = n;
+		n->add(&node_);
+	}
+	else
+	{
+		net_->remove(&node_);
+		net_ = n;
 	}
 }
 
 void Term::setNet(const std::string& s)
 {
+	Term::setNet(static_cast<Cell*>(owner_)->getNet(s));
 }
 
 void Term::setPosition (const Point& p)

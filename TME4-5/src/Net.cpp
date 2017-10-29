@@ -57,8 +57,27 @@ size_t Net::getFreeNodeId () const
 void Net::add (Node* n)
 {
 	size_t id = Net::getFreeNodeId();
-	nodes_.insert(nodes_.begin()+id, n);
+	if(n->getId() == Node::noid)
+	{
+		nodes_.insert(nodes_.begin()+id, n);
+	}
+	else
+	{
+		nodes_.insert(nodes_.begin()+n->getId(), n);
+	}
 }
 
 bool Net::remove (Node* n)
-{return true;}
+{
+	for (std::vector<Node*>::iterator it = nodes_.begin();
+			(it != nodes_.end()) && (it != nodes_.end());
+			it++)
+	{
+		if(*it == n)
+		{
+			*it = NULL;
+			return true;
+		}
+	}
+	return false;
+}
