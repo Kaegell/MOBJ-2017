@@ -35,3 +35,16 @@
         add_executable ( tme45        ${cpps} )
                install ( TARGETS      tme45        DESTINATION bin )
                install ( FILES        ${includes}  DESTINATION include )
+               
+# Detection de LibXml2.
+find_package(LibXml2)
+
+# Trouver les includes de LibXml2.
+   include_directories( ${SCHEMATIC_SOURCE_DIR} ${LIBXML2_INCLUDE_DIR} )
+
+# [...]
+
+# Faire l'edition de liens avec la LibXml2.
+       add_executable ( tme6 ${cpps} )
+target_link_libraries ( tme6 ${LIBXML2_LIBRARIES} )
+
