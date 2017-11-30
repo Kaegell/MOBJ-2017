@@ -100,3 +100,8 @@ void Term::toXml(std::ostream& o)
 	o << " direction=\"" << dir << "\"/>";
 	o << std::endl;
 }
+
+static Term* Term::fromXml(Cell* c, xmlTextReaderPtr reader)
+{
+    string name = xmlCharToString
+}
