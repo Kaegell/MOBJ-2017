@@ -101,7 +101,25 @@ void Term::toXml(std::ostream& o)
 	o << std::endl;
 }
 
-static Term* Term::fromXml(Cell* c, xmlTextReaderPtr reader)
+Term* Term::fromXml(Cell* c, xmlTextReaderPtr reader)
 {
-    string name = xmlCharToString
+	Term::Direction direction;
+	std::string name = xmlCharToString(xmlTextReaderGetAttribute(reader,(const xmlChar*)"name"));
+	std::string dir = xmlCharToString(xmlTextReaderGetAttribute(reader,(const xmlChar*)"direction"));
+	if(name.empty() || dir.empty())
+		return NULL;
+	if (dir == "In")
+		direction = Term::In;
+	else if (dir == "Out")
+		direction = Term::Out;
+	else if (dir == "Inout")
+		direction = Term::Inout;
+	else if (dir == "Tristate")
+		direction = Term::Tristate;
+	else if (dir == "Transcv")
+		direction = Term::Transcv;
+	else
+		direction = Term::Unknown;
+	Term* term = new Term(c,name,direction);
+	return term;
 }

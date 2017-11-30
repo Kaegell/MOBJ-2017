@@ -23,7 +23,7 @@ namespace Netlist
         static std::string toString (Type t);
         static std::string toString (Direction d);
         static Direction toDirection (std::string s);
-        static       Term*                   fromXml         (Cell* c, xmlTextReaderPtr reader);
+        static Term* fromXml (Cell* c, xmlTextReaderPtr reader);
 
         Term (Cell* c, const std::string& name, Direction d);
         Term (Instance* i, const Term* modelTerm);

@@ -38,6 +38,7 @@ namespace Netlist
 			void setPosition (const Point& p);
 			void setPosition (int x, int y);
 			void toXml(std::ostream& o);
+			static Instance* fromXml(Cell* c, xmlTextReaderPtr reader);
 			Term* getFromTerms ( const std::string& name ) const;
 		private:
 			Cell* owner_;

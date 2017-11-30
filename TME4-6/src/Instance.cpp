@@ -81,3 +81,27 @@ void Instance::toXml(std::ostream& o)
 	o << " y=\"" << position_.getY();
 	o << "/>" << std::endl;
 }
+
+Instance* Instance::fromXml(Cell* c, xmlTextReaderPtr reader)
+{
+	std::string name = xmlCharToString(xmlTextReaderGetAttribute(reader,(const xmlChar*)"name"));
+	std::string mastercell= xmlCharToString(xmlTextReaderGetAttribute(reader,(const xmlChar*)"mastercell"));
+	std::string x_str = xmlCharToString(xmlTextReaderGetAttribute(reader,(const xmlChar*)"x_str"));
+	std::string y_str = xmlCharToString(xmlTextReaderGetAttribute(reader,(const xmlChar*)"y_str"));
+
+	if(name.empty() || mastercell.empty()
+			|| x_str.empty() || y_str.empty())
+	{
+		return NULL;
+	}
+
+	int x = atoi(x_str.c_str());
+	int y = atoi(y_str.c_str());
+
+	Cell* model;
+	if(!(model = Cell::find(mastercell)))
+		return NULL;
+	Instance* instance = new Instance(c,model,name);
+	instance->setPosition(x,y);
+	return instance;
+}
