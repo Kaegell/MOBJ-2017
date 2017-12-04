@@ -44,5 +44,17 @@ namespace Netlist {
 	  o << endl;
   }
 
+  static bool fromXml(Net* net, xmlTextReaderPtr reader)
+  {
+	std::string term = xmlCharToString(xmlTextReaderGetAttribute(reader,(const xmlChar*)"term"));
+	std::string id = xmlCharToString(xmlTextReaderGetAttribute(reader,(const xmlChar*)"id"));
+	std::string instance = xmlCharToString(xmlTextReaderGetAttribute(reader,(const xmlChar*)"instance"));
+	std::string x_str = xmlCharToString(xmlTextReaderGetAttribute(reader,(const xmlChar*)"x"));
+	std::string y_str = xmlCharToString(xmlTextReaderGetAttribute(reader,(const xmlChar*)"y"));
+	if(term.empty() || id.empty() || x_str.empty() || y_str.empty())
+		return false;
+	int x = atoi(x_str.c_str());
+	int y = atoi(y_str.c_str());
+  }
 
 }  // Netlist namespace.

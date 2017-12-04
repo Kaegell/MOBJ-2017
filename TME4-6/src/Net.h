@@ -18,6 +18,7 @@ namespace Netlist
 			 Net (Cell* c, const std::string& s, Term::Type t);
 			 ~Net ();
 
+			 static Net* fromXml(Cell* c, xmlTextReaderPtr reader);
 			 Cell* getCell () const;
 			 const std::string& getName () const;
 			 unsigned int getId () const;
