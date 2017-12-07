@@ -158,17 +158,17 @@ Net* Net::fromXml(Cell* c, xmlTextReaderPtr reader)
 							xmlTextReaderGetAttribute(reader, (const xmlChar*)"name"));
 					std::string netTypeStr= xmlCharToString(
 							xmlTextReaderGetAttribute(reader, (const xmlChar*)"type"));
-					if (not (netName.empty() or netTypeStr.empty()))
-					{
-						Term::Type netType;
-						if(netTypeStr == "Internal")
-							netType = Term::Internal;
-						else
-							netType = Term::External;
-						net = new Net(c,netName, netType);
-						state = BeginNode;
-						continue;
-					}
+					if (netName.empty() or netTypeStr.empty())
+                        return NULL;
+                    Term::Type netType;
+                    if(netTypeStr == "Internal")
+                        netType = Term::Internal;
+                    else
+                        netType = Term::External;
+                    net = new Net(c,netName, netType);
+                    std::cerr << "passed Init" << std::endl;
+                    state = BeginNode;
+                    continue;
 				}
 				break;
 

@@ -88,8 +88,8 @@ Instance* Instance::fromXml(Cell* c, xmlTextReaderPtr reader)
 {
 	std::string name = xmlCharToString(xmlTextReaderGetAttribute(reader,(const xmlChar*)"name"));
 	std::string mastercell= xmlCharToString(xmlTextReaderGetAttribute(reader,(const xmlChar*)"mastercell"));
-	std::string x_str = xmlCharToString(xmlTextReaderGetAttribute(reader,(const xmlChar*)"x_str"));
-	std::string y_str = xmlCharToString(xmlTextReaderGetAttribute(reader,(const xmlChar*)"y_str"));
+	std::string x_str = xmlCharToString(xmlTextReaderGetAttribute(reader,(const xmlChar*)"x"));
+	std::string y_str = xmlCharToString(xmlTextReaderGetAttribute(reader,(const xmlChar*)"y"));
 
 	if(name.empty() || mastercell.empty()
 			|| x_str.empty() || y_str.empty())
