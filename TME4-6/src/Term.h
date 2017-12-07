@@ -8,6 +8,8 @@
 #include "Term.h"
 #include "Point.h"
 #include "Instance.h"
+#include <libxml/xmlreader.h>
+#include <XmlUtil.h>
 
 namespace Netlist
 {
