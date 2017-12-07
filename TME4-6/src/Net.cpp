@@ -6,7 +6,7 @@
 #include "Net.h"
 #include "Point.h"
 #include <libxml/xmlreader.h>
-#include <XmlUtil.h>
+#include "XmlUtil.h"
 
 using namespace Netlist;
 using namespace std;

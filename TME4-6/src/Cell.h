@@ -5,8 +5,9 @@
 #include <vector>
 #include "Indentation.h"
 #include <libxml/xmlreader.h>
-#include <XmlUtil.h>
- 
+#include "XmlUtil.h"
+#include <fstream>
+
 namespace Netlist {
 
     class Instance;
@@ -22,6 +23,8 @@ namespace Netlist {
         public:                                                  
             Cell              ( const std::string& );
             ~Cell              ();
+            static Cell* load ( const std::string& cellName );
+            void save () const;
             inline const std::string&            getName           () const;
             inline const std::vector<Instance*>& getInstances      () const;
             inline const std::vector<Term*>&     getTerms          () const;
@@ -38,7 +41,7 @@ namespace Netlist {
             void                    remove            ( Net* );
             bool                    connect           ( const std::string& name, Net* net );
             unsigned int            newNetId          ();
-            void					toXml			 (std::ostream& o);
+            void					toXml			 (std::ostream& o) const;
         private:
             static  std::vector<Cell*>      cells_;
             std::string             name_;

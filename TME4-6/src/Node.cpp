@@ -7,7 +7,7 @@
 #include  "Instance.h"
 #include  "Cell.h"
 #include <libxml/xmlreader.h>
-#include <XmlUtil.h>
+#include "XmlUtil.h"
 
 namespace Netlist {
 

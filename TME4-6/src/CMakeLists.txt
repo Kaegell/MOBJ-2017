@@ -19,6 +19,7 @@ set( includes     Indentation.h
     Point.h
     Node.h
     Cell.h
+    XmlUtil.h
     )
 
 set( cpps         Indentation.cpp
@@ -28,6 +29,7 @@ set( cpps         Indentation.cpp
     Point.cpp
     Node.cpp
     Cell.cpp
+    XmlUtil.cpp
     Main.cpp
     )
 

@@ -3,6 +3,8 @@
 #include  "Term.h"
 #include  "Net.h"
 #include  "Instance.h"
+#include "XmlUtil.h"
+#include <fstream>
 
 
 namespace Netlist {
@@ -158,7 +160,7 @@ namespace Netlist {
     unsigned int Cell::newNetId ()
     { return maxNetIds_++; }
 
-    void Cell::toXml (std::ostream& o)
+    void Cell::toXml (std::ostream& o) const
     {
         o << "<?xml version=\"1.0\"?>" << std::endl;
         o << indent++ << "<cell name=\"" << name_ << "\">" << std::endl;
@@ -301,6 +303,39 @@ namespace Netlist {
 
         return cell;
     }
+
+    Cell* Cell::load ( const string& cellName )
+    {
+        string           cellFile = "./cells/" + cellName + ".xml";
+        xmlTextReaderPtr reader;
+
+        reader = xmlNewTextReaderFilename( cellFile.c_str() );
+        if (reader == NULL) {
+            cerr << "[ERROR] Cell::load() unable to open file <" << cellFile << ">." << endl;
+            return NULL;
+        }
+
+        Cell* cell = Cell::fromXml( reader );
+        xmlFreeTextReader( reader );
+
+        return cell;
+    }
+
+    void  Cell::save () const
+    {
+        string  fileName   = getName() + ".xml";
+        fstream fileStream ( fileName.c_str(), ios_base::out|ios_base::trunc );
+        if (not fileStream.good()) {
+            cerr << "[ERROR] Cell::save() unable to open file <" << fileName << ">." << endl;
+            return;
+        }
+
+        cerr << "Saving <Cell " << getName() << "> in <" << fileName << ">" << endl;
+        toXml( fileStream );
+
+        fileStream.close();
+    }
+
 
 
 }  // Netlist namespace.
