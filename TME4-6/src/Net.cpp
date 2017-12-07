@@ -115,6 +115,7 @@ void Net::toXml(std::ostream& o)
 Net* Net::fromXml(Cell* c, xmlTextReaderPtr reader)
 {
 
+
 	const xmlChar* netTag = xmlTextReaderConstString(reader, (const xmlChar*)"net");
 	const xmlChar* nodeTag = xmlTextReaderConstString(reader, (const xmlChar*)"node");
 
@@ -159,46 +160,46 @@ Net* Net::fromXml(Cell* c, xmlTextReaderPtr reader)
 					std::string netTypeStr= xmlCharToString(
 							xmlTextReaderGetAttribute(reader, (const xmlChar*)"type"));
 					if (netName.empty() or netTypeStr.empty())
+                    {
+                        std::cout << "passed tags" << std::endl;
                         return NULL;
+                    }
                     Term::Type netType;
                     if(netTypeStr == "Internal")
                         netType = Term::Internal;
                     else
                         netType = Term::External;
                     net = new Net(c,netName, netType);
-                    std::cerr << "passed Init" << std::endl;
+                    if(!net) return NULL;
+                    std::cout << "passed Init" << std::endl;
                     state = BeginNode;
                     continue;
 				}
 				break;
 
 			case BeginNode:
-				if(nodeName == nodeTag
-						and xmlTextReaderNodeType(reader) == XML_READER_TYPE_ELEMENT)
+				if(nodeName == nodeTag and xmlTextReaderNodeType(reader) == XML_READER_TYPE_ELEMENT)
 				{
-					state = EndNet;
+					state = EndNode;
 					continue;
 				}
 				break;
 
 			case EndNode:
-				if(nodeName == nodeTag
-						and xmlTextReaderNodeType(reader) == XML_READER_TYPE_END_ELEMENT)
+				if(nodeName == nodeTag and xmlTextReaderNodeType(reader) == XML_READER_TYPE_END_ELEMENT)
 				{
 					state = EndNet;
 					continue;
 				}
 				else
-				{
 					if (Node::fromXml(net,reader)) continue;
-				}
 				break;
 			case EndNet:
-				if(nodeName == netTag
-						and xmlTextReaderNodeType(reader) == XML_READER_TYPE_END_ELEMENT)
-				{
-					continue;
-				}
+				if(nodeName == netTag and xmlTextReaderNodeType(reader) == XML_READER_TYPE_END_ELEMENT)
+                {
+                    c->add(net);
+                    return net;
+                }
 				break;
 
 			default:
@@ -208,6 +209,5 @@ Net* Net::fromXml(Cell* c, xmlTextReaderPtr reader)
 			<< "> (line:" << xmlTextReaderGetParserLineNumber(reader) << ")." << endl;
 		break;
 	}
-	c->add(net);
-	return net;
+    return NULL;
 }
