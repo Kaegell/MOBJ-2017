@@ -112,102 +112,112 @@ void Net::toXml(std::ostream& o)
 	o << endl;
 }
 
-Net* Net::fromXml(Cell* c, xmlTextReaderPtr reader)
-{
+//Net* Net::fromXml(Cell* c, xmlTextReaderPtr reader)
+//{
+//    std::cout << "now entering Net::fromXml()" << std::endl;
+//
+//	const xmlChar* netTag = xmlTextReaderConstString(reader, (const xmlChar*)"net");
+//	const xmlChar* nodeTag = xmlTextReaderConstString(reader, (const xmlChar*)"node");
+//
+//	Net* net = NULL;
+//
+//	while(true)
+//	{
+//		const xmlChar* nodeName = xmlTextReaderConstLocalName( reader );
+//
+//        if(nodeName == netTag and xmlTextReaderNodeType(reader) == XML_READER_TYPE_ELEMENT)
+//        {
+//            std::string netName = xmlCharToString(
+//                    xmlTextReaderGetAttribute(reader, (const xmlChar*)"name"));
+//            std::string netTypeStr= xmlCharToString(
+//                    xmlTextReaderGetAttribute(reader, (const xmlChar*)"type"));
+//            if (netName.empty() or netTypeStr.empty())
+//            {
+//                return NULL;
+//            }
+//            Term::Type netType;
+//            if(netTypeStr == "Internal")
+//                netType = Term::Internal;
+//            else
+//                netType = Term::External;
+//            std::cout << netName << std::endl;
+//            net = new Net(c,netName, netType);
+//            if(!net) return NULL;
+//            continue;
+//        }
+//
+//		int status = xmlTextReaderRead(reader);
+//		if (status != 1) {
+//			if (status != 0) {
+//				cerr << "[ERROR] Cell::fromXml(): Unexpected termination of the XML parser." << endl;
+//			}
+//			break;
+//		}
+//
+//
+//        if(nodeName == nodeTag and xmlTextReaderNodeType(reader) == XML_READER_TYPE_END_ELEMENT)
+//        {
+//            if (Node::fromXml(net,reader)) continue;
+//        }
+//
+//        if(nodeName == netTag and xmlTextReaderNodeType(reader) == XML_READER_TYPE_END_ELEMENT)
+//        {
+//            break;
+//        }
+//
+//		cerr << "[ERROR] Net::fromXml(): Unknown or misplaced tag <" << nodeName
+//			<< "> (line:" << xmlTextReaderGetParserLineNumber(reader) << ")." << endl;
+//		break;
+//	}
+//    return net;
+//}
+
+Net* Net::fromXml(Cell* c, xmlTextReaderPtr reader){
+    Net* net = NULL;
+
+    const xmlChar* nodeTag  = xmlTextReaderConstString        ( reader, (const xmlChar*)"net" );
+    const xmlChar* nodeName = xmlTextReaderConstLocalName     ( reader );
 
 
-	const xmlChar* netTag = xmlTextReaderConstString(reader, (const xmlChar*)"net");
-	const xmlChar* nodeTag = xmlTextReaderConstString(reader, (const xmlChar*)"node");
+    if((nodeTag == nodeName) and !(xmlTextReaderNodeType(reader) == XML_READER_TYPE_END_ELEMENT))
+    {
 
-	enum State {
-		Init = 0,
-		BeginNet,
-		BeginNode,
-		EndNode,
-		EndNet
-	};
+        std::string netName = xmlCharToString( xmlTextReaderGetAttribute( reader, (const xmlChar*)"name" ) );
+        std::string netType = xmlCharToString( xmlTextReaderGetAttribute( reader, (const xmlChar*)"type" ) );
 
-	Net* net = NULL;
-	State state = BeginNet;
 
-	while(true)
-	{
-		int status = xmlTextReaderRead(reader);
-		if (status != 1) {
-			if (status != 0) {
-				cerr << "[ERROR] Cell::fromXml(): Unexpected termination of the XML parser." << endl;
-			}
-			break;
-		}
+        //Term::Type t = Term::toType(netType);
+        Term::Type t;
+            if(netType == "Internal")
+                t = Term::Internal;
+            else
+                t = Term::External;
 
-		switch ( xmlTextReaderNodeType(reader) ) {
-			case XML_READER_TYPE_COMMENT:
-			case XML_READER_TYPE_WHITESPACE:
-			case XML_READER_TYPE_SIGNIFICANT_WHITESPACE:
-				continue;
-		}
+        net = new Net(c, netName, t);
+        const xmlChar* nTag     = xmlTextReaderConstString        ( reader, (const xmlChar*)"node" );
+        //const xmlChar* lineTag  = xmlTextReaderConstString        ( reader, (const xmlChar*)"line" );
 
-		const xmlChar* nodeName = xmlTextReaderConstLocalName( reader );
 
-		switch(state)
-		{
-			case Init:
-				if(netTag == nodeName)
-				{
-					state = BeginNet;
-					std::string netName = xmlCharToString(
-							xmlTextReaderGetAttribute(reader, (const xmlChar*)"name"));
-					std::string netTypeStr= xmlCharToString(
-							xmlTextReaderGetAttribute(reader, (const xmlChar*)"type"));
-					if (netName.empty() or netTypeStr.empty())
-                    {
-                        std::cout << "passed tags" << std::endl;
-                        return NULL;
-                    }
-                    Term::Type netType;
-                    if(netTypeStr == "Internal")
-                        netType = Term::Internal;
-                    else
-                        netType = Term::External;
-                    net = new Net(c,netName, netType);
-                    if(!net) return NULL;
-                    std::cout << "passed Init" << std::endl;
-                    state = BeginNode;
-                    continue;
-				}
-				break;
+        while(!((nodeTag == nodeName) and (xmlTextReaderNodeType(reader) == XML_READER_TYPE_END_ELEMENT))){
 
-			case BeginNode:
-				if(nodeName == nodeTag and xmlTextReaderNodeType(reader) == XML_READER_TYPE_ELEMENT)
-				{
-					state = EndNode;
-					continue;
-				}
-				break;
+            xmlTextReaderRead(reader);
 
-			case EndNode:
-				if(nodeName == nodeTag and xmlTextReaderNodeType(reader) == XML_READER_TYPE_END_ELEMENT)
-				{
-					state = EndNet;
-					continue;
-				}
-				else
-					if (Node::fromXml(net,reader)) continue;
-				break;
-			case EndNet:
-				if(nodeName == netTag and xmlTextReaderNodeType(reader) == XML_READER_TYPE_END_ELEMENT)
-                {
-                    c->add(net);
-                    return net;
-                }
-				break;
+            switch ( xmlTextReaderNodeType(reader) ) {
+                case XML_READER_TYPE_COMMENT:
+                case XML_READER_TYPE_WHITESPACE:
+                case XML_READER_TYPE_SIGNIFICANT_WHITESPACE:
+                continue;
+            }
 
-			default:
-				break;
-		}
-		cerr << "[ERROR] Net::fromXml(): Unknown or misplaced tag <" << nodeName
-			<< "> (line:" << xmlTextReaderGetParserLineNumber(reader) << ")." << endl;
-		break;
-	}
-    return NULL;
+            const xmlChar* tmpNodeName = xmlTextReaderConstLocalName     ( reader );
+
+            if(tmpNodeName == nTag){
+                if( !(Node::fromXml(net, reader)) ) return NULL;
+            }
+            //if(tmpNodeName == lineTag){
+             //   if( !(Line::fromXml(net, reader)) ) return NULL;
+            //}
+        }
+    }
+    return net;
 }

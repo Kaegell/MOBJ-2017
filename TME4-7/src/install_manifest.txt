@@ -1,9 +1,0 @@
-/home/bawuka/Lab/MOBJ-2017/TME4-6/src/../install/bin/tme6
-/home/bawuka/Lab/MOBJ-2017/TME4-6/src/../install/include/Indentation.h
-/home/bawuka/Lab/MOBJ-2017/TME4-6/src/../install/include/Term.h
-/home/bawuka/Lab/MOBJ-2017/TME4-6/src/../install/include/Net.h
-/home/bawuka/Lab/MOBJ-2017/TME4-6/src/../install/include/Instance.h
-/home/bawuka/Lab/MOBJ-2017/TME4-6/src/../install/include/Point.h
-/home/bawuka/Lab/MOBJ-2017/TME4-6/src/../install/include/Node.h
-/home/bawuka/Lab/MOBJ-2017/TME4-6/src/../install/include/Cell.h
-/home/bawuka/Lab/MOBJ-2017/TME4-6/src/../install/include/XmlUtil.h

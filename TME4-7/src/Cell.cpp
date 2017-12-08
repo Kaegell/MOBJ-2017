@@ -154,6 +154,7 @@ namespace Netlist {
         for ( vector<Net*>::iterator inet=nets_.begin() ; inet != nets_.end() ; ++inet ) {
             if (*inet == net) nets_.erase( inet );
         }
+                        std::cout << "passed tags" << std::endl;
     }
 
 
