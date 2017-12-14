@@ -21,6 +21,11 @@ set( includes     Indentation.h
     Cell.h
     XmlUtil.h
     Line.h
+    Box.h
+    Shape.h
+    BoxShape.h
+    LineShape.h
+    TermShape.h
     )
 
 set( cpps         Indentation.cpp
@@ -33,6 +38,11 @@ set( cpps         Indentation.cpp
     XmlUtil.cpp
     Main.cpp
     Line.cpp
+    Box.cpp
+    Shape.cpp
+    BoxShape.cpp
+    LineShape.cpp
+    TermShape.cpp
     )
 
 add_executable ( tme6        ${cpps} )
