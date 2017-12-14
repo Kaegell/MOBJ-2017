@@ -26,10 +26,13 @@ namespace Netlist
 			 unsigned int getId () const;
 			 Term::Type getType () const;
 			 const std::vector<Node*>& getNodes () const;
+             const std::vector<Line*>& getLines () const;
 			 size_t getFreeNodeId () const;
 
 			 void add (Node* n);
+             void add (Line* line);
 			 bool remove (Node* n);
+             bool remove (Line* line);
 			 void toXml(std::ostream& o);
 		private :
 			Cell* owner_;
@@ -37,6 +40,7 @@ namespace Netlist
 			unsigned int id_;
 			Term::Type type_;
 			std::vector<Node*> nodes_;
+            std::vector<Line*> lines_;
 	};
 }
 
